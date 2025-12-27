@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FixKuppam – Civic Issue Platform</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --text:#222;
+  --primary:#0b5ed7;
+}
+.dark{
+  --bg:#121212;
+  --card:#1f1f1f;
+  --text:#f1f1f1;
+  --primary:#4dabf7;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
+body{background:var(--bg);color:var(--text);transition:.3s}
+
+/* NAV */
+nav{
+  background:var(--primary);
+  color:#fff;
+  padding:14px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  font-size:1.4rem;
+  font-weight:600;
+}
+.logo span{color:#ffd43b}
+nav ul{list-style:none;display:flex;gap:20px}
+nav a{color:#fff;text-decoration:none;font-size:.95rem}
+nav a:hover{text-decoration:underline}
+
+.hero {
+  min-height: 60vh;
+  background-image: url("C:/Users/thanu/OneDrive/Desktop/kpm.jpeg");
+  background-size: cover;       /* Makes the image cover the entire hero area */
+  background-position: center;  /* Centers the image */
+  background-repeat: no-repeat; /* Prevents tiling */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero div{
+  background:rgba(0,0,0,.65);
+  color:#fff;
+  padding:35px;
+  border-radius:12px;
+  text-align:center;
+}
+
+/* SECTION */
+section{padding:40px 20px}
+h2{text-align:center;color:var(--primary);margin-bottom:25px}
+
+/* FORM */
+form{
+  max-width:600px;
+  margin:auto;
+  background:var(--card);
+  padding:25px;
+  border-radius:12px;
+}
+input,textarea,select{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+button{
+  padding:10px 18px;
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+/* ISSUES */
+.issues{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+}
+.card{
+  background:var(--card);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
+  transition:.3s;
+}
+.card:hover{transform:translateY(-5px)}
+.card img{width:100%;height:180px;object-fit:cover}
+.card-content{padding:15px}
+
+.status{
+  font-size:.75rem;
+  padding:4px 10px;
+  border-radius:20px;
+  color:#fff;
+}
+.reported{background:#dc3545}
+.inprogress{background:#ffc107;color:#000}
+.resolved{background:#198754}
+
+.actions{
+  display:flex;
+  gap:15px;
+  margin-top:10px;
+  align-items:center;
+}
+.actions span{
+  cursor:pointer;
+  font-size:.9rem;
+}
+
+/* COMMENTS */
+.comments{margin-top:10px}
+.comment{
+  font-size:.8rem;
+  background:#ddd;
+  padding:5px;
+  border-radius:5px;
+  margin-top:4px;
+}
+
+/* DASH */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+}
+.stat{
+  background:var(--card);
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+}
+.stat h3{font-size:2rem;color:var(--primary)}
+
+/* ADMIN */
+#adminPanel{display:none}
+
+/* DARK MODE BTN */
+.toggle{
+  cursor:pointer;
+  font-size:1.2rem;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:15px;
+  background:#000;
+  color:#bbb;
+  margin-top:30px;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+  nav ul{display:none}
+  .hero div{padding:20px}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">F<span>⚡</span>K FixKuppam</div>
+  <ul>
+    <li><a href="#issues">Issues</a></li>
+    <li><a href="#report">Report</a></li>
+    <li><a href="#dashboard">Dashboard</a></li>
+    <li><a href="#admin">Admin</a></li>
+  </ul>
+  <div class="toggle" onclick="toggleDark()">🌙</div>
+</nav>
+
+<div class="hero">
+  <div>
+    <h1>Public Issues. Public Accountability.</h1>
+    <p>One platform for citizens & government to act together.</p>
+  </div>
+</div>
+
+<!-- REPORT -->
+<section id="report">
+<h2>Report an Issue</h2>
+<form id="issueForm">
+  <input id="title" placeholder="Issue title" required>
+  <textarea id="desc" placeholder="Describe the issue" required></textarea>
+  <input id="loc" placeholder="Location" required>
+  <input type="file" id="img" accept="image/*" required>
+  <button>Submit</button>
+</form>
+</section>
+
+<!-- ISSUES -->
+<section id="issues">
+<h2>Community Issues</h2>
+<div class="issues" id="issueList"></div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard">
+<h2>Dashboard</h2>
+<div class="stats">
+  <div class="stat"><h3 id="total">0</h3><p>Total Issues</p></div>
+  <div class="stat"><h3 id="resolved">0</h3><p>Resolved</p></div>
+</div>
+</section>
+
+<!-- ADMIN -->
+<section id="admin">
+<h2>Government / Admin Login</h2>
+
+<div id="loginBox">
+  <input id="adminUser" placeholder="Username">
+  <input id="adminPass" type="password" placeholder="Password">
+  <button onclick="adminLogin()">Login</button>
+</div>
+
+<div id="adminPanel">
+  <p><b>Admin Mode Enabled</b></p>
+</div>
+</section>
+
+<footer>
+FixKuppam | Civic-Tech Academic Prototype
+</footer>
+
+<script>
+let issues=[];
+let isAdmin=false;
+
+issueForm.addEventListener("submit",e=>{
+  e.preventDefault();
+  const reader=new FileReader();
+  const img=imgInput.files[0];
+  reader.onload=()=>{
+    issues.push({
+      title:title.value,
+      desc:desc.value,
+      loc:loc.value,
+      img:reader.result,
+      up:0,
+      down:0,
+      comments:[],
+      status:"Reported"
+    });
+    render();
+    issueForm.reset();
+  };
+  reader.readAsDataURL(img);
+});
+
+function render(){
+  issueList.innerHTML="";
+  issues.forEach((i,idx)=>{
+    issueList.innerHTML+=`
+    <div class="card">
+      <img src="${i.img}">
+      <div class="card-content">
+        <span class="status ${i.status.toLowerCase().replace(" ","")}">${i.status}</span>
+        <h3>${i.title}</h3>
+        <p>${i.desc}</p>
+        <small><b>Location:</b> ${i.loc}</small>
+
+        <div class="actions">
+          <span onclick="vote(${idx},1)">👍 ${i.up}</span>
+          <span onclick="vote(${idx},-1)">👎 ${i.down}</span>
+          ${isAdmin?`
+          <select onchange="iStatus(${idx},this.value)">
+            <option>Reported</option>
+            <option>In Progress</option>
+            <option>Resolved</option>
+          </select>`:""}
+        </div>
+
+        <div class="comments">
+          <input placeholder="Add comment" onkeydown="addComment(event,${idx})">
+          ${i.comments.map(c=>`<div class="comment">${c}</div>`).join("")}
+        </div>
+      </div>
+    </div>`;
+  });
+  total.innerText=issues.length;
+  resolved.innerText=issues.filter(i=>i.status=="Resolved").length;
+}
+
+function vote(i,v){v>0?issues[i].up++:issues[i].down++;render();}
+function addComment(e,i){if(e.key=="Enter"){issues[i].comments.push(e.target.value);render();}}
+function iStatus(i,v){issues[i].status=v;render();}
+
+function adminLogin(){
+  if(adminUser.value=="admin" && adminPass.value=="kuppam123"){
+    isAdmin=true;
+    loginBox.style.display="none";
+    adminPanel.style.display="block";
+    render();
+  } else alert("Invalid credentials");
+}
+
+function toggleDark(){
+  document.body.classList.toggle("dark");
+}
+</script>
+
+</body>
+</html>
